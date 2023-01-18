@@ -1,8 +1,7 @@
-import { isValidObjectId } from 'mongoose';
 import ICar from '../Interfaces/ICar';
 import CarODM from '../Models/CarODM';
 import Car from '../Domains/Car';
-import { UnprocessableEntity, NotFound } from '../Interfaces/errors';
+import { NotFound } from '../Interfaces/errors';
 
 class CarService {
   private carODM: CarODM;
@@ -20,7 +19,6 @@ class CarService {
   }
 
   public async findById(id: string) {
-    if (!isValidObjectId(id)) throw new UnprocessableEntity('Invalid mongo id');
     const car = await this.carODM.findById(id);
     if (car === null) throw new NotFound('Car not found');
     return car;
@@ -33,6 +31,12 @@ class CarService {
     }
     const newCar = await this.carODM.create(carWithStatus);
     return this.createCarDomain(newCar);
+  }
+
+  public async updateById(id: string, car: ICar) {
+    const updatedCar = await this.carODM.updateById(id, car);
+    if (updatedCar === null) throw new NotFound('Car not found');
+    return updatedCar;
   }
 }
 

@@ -19,4 +19,9 @@ routes.post(
   (req, res, next) => new CarController(req, res, next).register(),
 );
 
+routes.put(
+  '/:id',
+  errorHandlerWrapper((req, res, next) => new CarController(req, res, next).updateById()),
+);
+
 export default routes;
