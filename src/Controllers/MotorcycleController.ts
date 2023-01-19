@@ -15,10 +15,28 @@ class MotorcycleController {
     this.service = new MotorcycleService();
   }
 
+  public async findAll() {
+    const motorcycles = await this.service.findAll();
+    return this.res.status(200).json(motorcycles);
+  }
+
+  public async findById() {
+    const { id } = this.req.params;
+    const motorcycle = await this.service.findById(id);
+    return this.res.status(200).json(motorcycle);
+  }
+
   public async register() {
     const motorcycle: IMotorcycle = this.req.body;
     const newMotorcycle = await this.service.register(motorcycle);
     return this.res.status(201).json(newMotorcycle);
+  }
+
+  public async updateById() {
+    const motorcycle: IMotorcycle = this.req.body;
+    const { id } = this.req.params;
+    const updatedMotorcycle = await this.service.updateById(id, motorcycle);
+    return this.res.status(200).json(updatedMotorcycle);
   }
 }
 
